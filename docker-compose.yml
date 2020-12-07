@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  app:
+    container_name: app
+    depends_on:
+      - mongo
+    image: bnext-web
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: dockerfile
+    env_file: docker.env
+    ports:
+      - 80:3000
+    volumes:
+      - $PWD/.uploads:/opt/bnext-files
+    networks:
+      - bnext-net
+  mongo:
+    container_name: mongo
+    command:
+      - --storageEngine=wiredTiger
+    image: mongo:4.2.5-bionic
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root123
+    volumes:
+      - $PWD/data:/data/db
+      - $PWD/database:/opt/database
+    networks:
+      - bnext-net
+networks:
+  bnext-net:
