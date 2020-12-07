@@ -5,7 +5,9 @@ import { ContactsModule } from './api/contacts/contacts.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/bnext'),
+    MongooseModule.forRoot(
+      'mongodb://root:root123@mongo:27017/bnext?authSource=admin',
+    ),
     UsersModule,
     ContactsModule,
   ],
